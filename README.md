@@ -1,16 +1,6 @@
-## Getting Started
+## Repository Information
 
-First, run the development server:
+Infinity Space - Template of a simple Infinite board space, Can be used for all kind of projects.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build your figma like project or similar with this template, implement your mechanisem and algorithems.
 
