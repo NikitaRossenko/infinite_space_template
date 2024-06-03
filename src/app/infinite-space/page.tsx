@@ -152,7 +152,12 @@ const InfiniteSpace = () => {
             width={25}
             height={25}
             patternUnits="userSpaceOnUse"
-            patternTransform={`translate(${currentCameraPosition.x % 25}, ${currentCameraPosition.y % 25})`}
+            patternTransform={
+              `
+              translate(${currentCameraPosition.x * currentCameraPosition.zoom}, ${currentCameraPosition.y * currentCameraPosition.zoom})
+              scale(${currentCameraPosition.zoom})
+              `
+            }
           >
             <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(0,0,0,0.6)" strokeWidth="0.5"/>
           </pattern>
@@ -160,12 +165,14 @@ const InfiniteSpace = () => {
         <g
           transform={`translate(${currentCameraPosition.x}, ${currentCameraPosition.y}) scale(${currentCameraPosition.zoom})`}
         >
-          {grid && <rect
-            width={window.innerWidth}
-            height={window.innerHeight}
-            fill="url(#grid)"
-            transform={`scale(${1/currentCameraPosition.zoom}) translate(${-currentCameraPosition.x}, ${-currentCameraPosition.y})`}
-          />}
+          {grid &&
+            <rect
+              width={window.innerWidth}
+              height={window.innerHeight}
+              fill="url(#grid)"
+              transform={`scale(${1/currentCameraPosition.zoom}) translate(${-currentCameraPosition.x}, ${-currentCameraPosition.y})`}
+            />
+          }
         </g>
       </svg>
     </>
