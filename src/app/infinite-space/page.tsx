@@ -33,7 +33,7 @@ const InfiniteSpace = () => {
 
     let newZoom = currentCameraPosition.zoom + zoomFactor;
     newZoom = Math.max(0.1, newZoom); // minimum zoom level
-    newZoom = Math.min(10, newZoom); // maximum zoom level
+    newZoom = Math.min(5, newZoom); // maximum zoom level
 
     const newX = globalX + (currentCameraPosition.x - globalX) * (newZoom / currentCameraPosition.zoom);
     const newY = globalY + (currentCameraPosition.y - globalY) * (newZoom / currentCameraPosition.zoom);
@@ -165,7 +165,7 @@ const InfiniteSpace = () => {
         <g
           transform={`translate(${currentCameraPosition.x}, ${currentCameraPosition.y}) scale(${currentCameraPosition.zoom})`}
         >
-          {grid &&
+          {(grid && currentCameraPosition.zoom > 0.5) &&
             <rect
               width={window.innerWidth}
               height={window.innerHeight}
