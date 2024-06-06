@@ -1,5 +1,4 @@
 import Tooltip from '@/components/Tooltip'
-import { CustomTooltipProps } from '@/interfaces/props'
 import React from 'react'
 
 export interface ToolButtonProps {
