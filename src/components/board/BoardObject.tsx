@@ -7,7 +7,7 @@ const BoardObject = ({position, cameraPosition, children}:BoardObjectProps) => {
       className="absolute"
       style={{
       transform:`
-        translate(${(cameraPosition.x + position.x)*cameraPosition.zoom}px, ${(cameraPosition.y + position.y)*cameraPosition.zoom}px)
+        translate(${cameraPosition.x + position.x}px, ${cameraPosition.y - position.y}px)
         scale(${cameraPosition.zoom})
       `
       }}

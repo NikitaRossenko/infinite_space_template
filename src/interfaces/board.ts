@@ -15,3 +15,7 @@ export type Point = {
   x:number
   y:number
 }
+
+export interface BoardObjectsProps {
+  currentCameraPosition:Camera
+}

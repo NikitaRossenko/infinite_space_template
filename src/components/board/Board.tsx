@@ -3,19 +3,31 @@ import BoardObject from './BoardObject'
 import Hint from '../Hint'
 import { Mouse } from 'lucide-react'
 import { boardRectangles } from '@/utils/mcDatabase/boardObjects'
-import { Camera } from '@/interfaces/board'
-
-export interface BoardObjectsProps {
-    currentCameraPosition:Camera
-}
+import { BoardObjectsProps } from '@/interfaces/board'
 
 const Board = ({currentCameraPosition}:BoardObjectsProps) => {
     const [spawn, setSpawn] = useState(false)
   return (
     <>
-        {/* Object 1 */}
+      {/* Title */}
       <BoardObject
-        position={{x:0, y:-100}}
+        position={{x:-180, y:296}}
+        cameraPosition={currentCameraPosition}
+      >
+        <h1 className='text-[40px] font-medium text-[#543310] drop-shadow-md'>Infinity Space Board</h1>
+      </BoardObject>
+
+      {/*Temp Center Indicator Object */}
+      <BoardObject
+        position={{x:-5, y:5}}
+        cameraPosition={currentCameraPosition}
+      >
+        <div className='w-[10px] h-[10px] bg-red-700 rounded-full'></div>
+      </BoardObject>
+
+      {/* Object 1 */}
+      <BoardObject
+        position={{x:-120, y:98}}
         cameraPosition={currentCameraPosition}
       >
         <Hint
@@ -24,9 +36,20 @@ const Board = ({currentCameraPosition}:BoardObjectsProps) => {
         />
       </BoardObject>
 
+      {/* Hint Object */}
+      <BoardObject
+        position={{x:256, y:98}}
+        cameraPosition={currentCameraPosition}
+      >
+        <Hint
+          text="What's there ->"
+          textClassName="text-[#543310]"
+        />
+      </BoardObject>
+
       {/* Object 2 */}
       <BoardObject
-        position={{x:0, y:0}}
+        position={{x:-170, y:-2}}
         cameraPosition={currentCameraPosition}
       >
         <Hint>
@@ -38,13 +61,13 @@ const Board = ({currentCameraPosition}:BoardObjectsProps) => {
 
       {/* Object 3 */}
       <BoardObject
-        position={{x:0, y:100}}
+        position={{x:-82, y:-104}}
         cameraPosition={currentCameraPosition}
       >
         <div
-          className='flex animate-slideUpAndFade flex-col gap-[10px] items-center justify-center p-[10px] min-w-[300px] rounded-md drop-shadow-md bg-white'
+          className='flex animate-slideUpAndFade flex-col gap-[10px] items-center justify-center p-[10px] rounded-md drop-shadow-md bg-white'
         >
-          <p className='text-[#543310]'>Spawn some Rectangles!</p>
+          <p className='text-[#543310]'>Spawn some objects!</p>
           <button
             className='px-[20px] py-[6px] rounded-lg bg-[#AF8F6F] text-[#F8F4E1] hover:bg-gray-300'
             onClick={() => setSpawn(!spawn)}
@@ -53,6 +76,20 @@ const Board = ({currentCameraPosition}:BoardObjectsProps) => {
           </button>
         </div>
       </BoardObject>
+
+      {/* Reveal when x > 300 */}
+      {((window.innerWidth/2 - currentCameraPosition.x) / currentCameraPosition.zoom >= 300) &&
+        <BoardObject
+          position={{x:500, y:98}}
+          cameraPosition={currentCameraPosition}
+        >
+          <div
+            className='flex animate-slideUpAndFade flex-col gap-[10px] items-center justify-center p-[10px] rounded-md drop-shadow-md bg-white'
+          >
+            <p className='text-[#543310]'>Puff! 🎉🎉</p>
+          </div>
+        </BoardObject>
+      }
 
       {/* Spawn Objects */}
       {spawn && boardRectangles.map(rectangle => {

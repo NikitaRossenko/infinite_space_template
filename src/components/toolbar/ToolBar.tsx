@@ -12,7 +12,7 @@ export interface ToolBarProps {
 const ToolBar = ({setCurrentCameraPosition, setGrid, grid}:ToolBarProps) => {
   return (
     <div
-        className='absolute animate-slideLeftAndFade flex flex-col items-start justify-center top-[200px] left-2 p-[10px] rounded-md drop-shadow-md bg-white gap-4'
+        className='absolute z-10 animate-slideLeftAndFade flex flex-col items-start justify-center top-[200px] left-2 p-[10px] rounded-md drop-shadow-md bg-white gap-4'
       >
         <ToolButton
           tooltip

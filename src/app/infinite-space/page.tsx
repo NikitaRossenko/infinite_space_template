@@ -61,12 +61,12 @@ const InfiniteSpace = () => {
     if (boardMode === BoardMode.PANNING) {
       setCurrentCameraPosition((camera:Camera) => ({
         ...camera,
-        x: camera.x + ((e.clientX - startPan.x)/currentCameraPosition.zoom),
-        y: camera.y + ((e.clientY - startPan.y)/currentCameraPosition.zoom),
+        x: camera.x + ((e.clientX - startPan.x)),
+        y: camera.y + ((e.clientY - startPan.y)),
       }))
       setStartPan(point)
     }
-  }, [startPan, boardMode, setCurrentCameraPosition, currentCameraPosition])
+  }, [startPan, boardMode, setCurrentCameraPosition])
 
   const onMouseUp = useCallback(() => {
     setIsPanning(false)
@@ -126,7 +126,7 @@ const InfiniteSpace = () => {
             patternUnits="userSpaceOnUse"
             patternTransform={
               `
-              translate(${currentCameraPosition.x * currentCameraPosition.zoom}, ${currentCameraPosition.y * currentCameraPosition.zoom})
+              translate(${currentCameraPosition.x }, ${currentCameraPosition.y})
               scale(${currentCameraPosition.zoom})
               `
             }
@@ -146,6 +146,8 @@ const InfiniteSpace = () => {
               transform={`scale(${1/currentCameraPosition.zoom}) translate(${-currentCameraPosition.x}, ${-currentCameraPosition.y})`}
             />
           }
+
+          <circle cx={0} cy={0} r={5} fill="rgba(0,0,0,1)"/>
         </g>
       </svg>
     </>
