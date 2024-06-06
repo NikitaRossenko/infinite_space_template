@@ -1,24 +1,23 @@
 "use client"
-import Coordinates from '@/components/Coordinates'
-import Hint from '@/components/Hint'
-import Seperator from '@/components/Seperator'
-import { Camera, CanvasMode, Point } from '@/interfaces/interfaces'
+import Coordinates from '@/components/board/Coordinates'
+import { Mouse } from 'lucide-react'
 import React, { useCallback, useState, useEffect } from 'react'
+import Hint from '@/components/Hint'
+import { initialCamera } from '@/constants/globalConstants'
+import { BoardMode, Camera, Point } from '@/interfaces/board'
+import ToolBar from '@/components/toolbar/ToolBar'
+import BoardObject from '@/components/board/BoardObject'
+import { boardRectangles } from '@/utils/mcDatabase/boardObjects'
 
-
-const initialCamera = {
-  x:window.innerWidth / 2,
-  y:window.innerHeight / 2,
-  zoom:1,
-}
 
 const InfiniteSpace = () => {
   const [isPanning, setIsPanning] = useState(false)
   const [isSpace, setIsSpace] = useState(false)
   const [startPan, setStartPan] = useState({x:0, y:0})
   const [currentCameraPosition, setCurrentCameraPosition] = useState<Camera>(initialCamera)
-  const [canvasMode, setCanvasMode] = useState<CanvasMode>(CanvasMode.NONE)
-  const [grid, setGrid] = useState(false)
+  const [boardMode, setBoardMode] = useState<BoardMode>(BoardMode.NONE)
+  const [grid, setGrid] = useState(true)
+  const [spawn, setSpawn] = useState(false)
 
   const onWheel = useCallback((e:React.WheelEvent) => {
     const zoomFactor = -e.deltaY * 0.001;
@@ -49,10 +48,10 @@ const InfiniteSpace = () => {
   const onMouseDown = useCallback((e:React.MouseEvent) => {
     if (isSpace){
       setIsPanning(true)
-      setCanvasMode(CanvasMode.PANNING)
+      setBoardMode(BoardMode.PANNING)
       setStartPan({x: e.clientX, y: e.clientY})
     }
-  }, [isSpace, setCanvasMode])
+  }, [isSpace, setBoardMode])
 
   const onKeyDown = useCallback((e:React.KeyboardEvent) => {
     if (e.code == "Space"){
@@ -63,7 +62,7 @@ const InfiniteSpace = () => {
   const onMouseMove = useCallback((e:React.MouseEvent) => {
     const point:Point = {x: e.clientX, y: e.clientY}
     setStartPan(point)
-    if (canvasMode === CanvasMode.PANNING) {
+    if (boardMode === BoardMode.PANNING) {
       setCurrentCameraPosition((camera:Camera) => ({
         ...camera,
         x: camera.x + ((e.clientX - startPan.x)/currentCameraPosition.zoom),
@@ -71,12 +70,12 @@ const InfiniteSpace = () => {
       }))
       setStartPan(point)
     }
-  }, [startPan, canvasMode, setCurrentCameraPosition, currentCameraPosition])
+  }, [startPan, boardMode, setCurrentCameraPosition, currentCameraPosition])
 
   const onMouseUp = useCallback(() => {
     setIsPanning(false)
-    setCanvasMode(CanvasMode.NONE)
-  }, [setCanvasMode])
+    setBoardMode(BoardMode.NONE)
+  }, [setBoardMode])
 
   const onKeyUp = useCallback(() => {
     setIsSpace(false)
@@ -106,38 +105,69 @@ const InfiniteSpace = () => {
         y={currentCameraPosition.y}
         zoom={currentCameraPosition.zoom}
       />
-      <Hint
-        position={{x:currentCameraPosition.x-150, y:currentCameraPosition.y}}
-        zoom={currentCameraPosition.zoom}
-        text="Press space to start panning"
-      />
-      <Hint
-        position={{x:currentCameraPosition.x-350, y:currentCameraPosition.y+200}}
-        zoom={currentCameraPosition.zoom}
-        text="Use your mouse wheel to zoom in and out"
-      />
-      <div
-        className='absolute flex flex-col items-start justify-center top-[200px] left-2 p-[10px] rounded-md drop-shadow-md bg-white gap-4'
+      {/* Object 1 */}
+      <BoardObject
+        position={{x:0, y:-100}}
+        cameraPosition={currentCameraPosition}
       >
-        <button
-          className='flex bg-white hover:bg-orange-300 p-1 rounded-md'
-          onClick={() => setCurrentCameraPosition(initialCamera)}
+        <Hint
+          text='Press space "⎵" to start panning'
+          textClassName="text-[#543310]"
+        />
+      </BoardObject>
+
+      {/* Object 2 */}
+      <BoardObject
+        position={{x:0, y:0}}
+        cameraPosition={currentCameraPosition}
+      >
+        <Hint>
+          <p className='text-[#543310]' >Use your mouse wheel</p>
+          <Mouse color='#543310'/>
+          <p className='text-[#543310]' >to zoom in and out</p>
+        </Hint>
+      </BoardObject>
+
+      {/* Object 3 */}
+      <BoardObject
+        position={{x:0, y:100}}
+        cameraPosition={currentCameraPosition}
+      >
+        <div
+          className='flex animate-slideUpAndFade flex-col gap-[10px] items-center justify-center p-[10px] min-w-[300px] rounded-md drop-shadow-md bg-white'
         >
-            Reset Camera
-        </button>
-        <Seperator />
-        <button
-          className='flex w-full items-center gap-2 bg-white hover:bg-orange-300 p-1 rounded-md'
-          onClick={() => setGrid(!grid)}
-        >
-          <input
-            type='checkbox'
-            placeholder='Grid'
-            checked={grid}
-          />
-          <p>Grid</p>
-        </button>
-      </div>
+          <p className='text-[#543310]'>Spawn some Rectangles!</p>
+          <button
+            className='px-[20px] py-[6px] rounded-lg bg-[#AF8F6F] text-[#F8F4E1] hover:bg-gray-300'
+            onClick={() => setSpawn(!spawn)}
+          >
+            {spawn?"Hide":"Spawn"}
+          </button>
+        </div>
+      </BoardObject>
+
+      {/* Spawn Objects */}
+      {spawn && boardRectangles.map(rectangle => {
+        return (
+          <>
+            <BoardObject
+              position={rectangle.position}
+              cameraPosition={currentCameraPosition}
+            >
+              <div
+                className={`w-[${rectangle.dimensions.width}px] h-[${rectangle.dimensions.height}px] bg-white border-[1px] border-[#AF8F6F] p-[6px] rounded-lg animate-slideUpAndFade`}
+              >
+                <p>{rectangle.content}</p>
+              </div>
+            </BoardObject>
+          </>
+        )
+      })}
+      <ToolBar
+        grid={grid}
+        setGrid={() => setGrid(!grid)}
+        setCurrentCameraPosition={() => setCurrentCameraPosition(initialCamera)}
+      />
       <svg
         className={`${isPanning? "cursor-grabbing":""} ${isSpace?"cursor-grab":""} h-[100vh] w-[100vw] bg-slate-100 overflow-hidden`}
         onWheel={onWheel}

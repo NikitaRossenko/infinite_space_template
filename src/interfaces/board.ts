@@ -1,6 +1,4 @@
-
-
-export const enum CanvasMode {
+export const enum BoardMode {
     NONE="none",
     PANNING="panning",
     RESIZING="resizing",

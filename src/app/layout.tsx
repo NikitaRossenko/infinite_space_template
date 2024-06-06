@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Infinite Space Template",
-  description:"Made By Nikita Rossenko"
+  description:"Template By Nikita Rossenko"
 };
 
 export default function RootLayout({

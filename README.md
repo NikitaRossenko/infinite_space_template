@@ -10,4 +10,3 @@ This template using:
 2. Tailwind
 3. Typescript
 
-
