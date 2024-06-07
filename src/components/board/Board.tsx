@@ -17,14 +17,6 @@ const Board = ({currentCameraPosition}:BoardObjectsProps) => {
         <h1 className='text-[40px] font-medium text-[#543310] drop-shadow-md'>Infinity Space Board</h1>
       </BoardObject>
 
-      {/*Temp Center Indicator Object */}
-      <BoardObject
-        position={{x:-5, y:5}}
-        cameraPosition={currentCameraPosition}
-      >
-        <div className='w-[10px] h-[10px] bg-red-700 rounded-full'></div>
-      </BoardObject>
-
       {/* Object 1 */}
       <BoardObject
         position={{x:-120, y:98}}

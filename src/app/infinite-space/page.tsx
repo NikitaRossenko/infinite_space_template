@@ -147,7 +147,10 @@ const InfiniteSpace = () => {
             />
           }
 
-          <circle cx={0} cy={0} r={5} fill="rgba(0,0,0,1)"/>
+          <circle cx={0} cy={0} r={5} fill="#543310"/>
+          <circle cx={-575} cy={-50} r={20} fill="#543310"/>
+          <circle cx={-575} cy={100} r={20} fill="none" stroke="#543310" strokeWidth={3}/>
+          <rect x={-625} y={0} width={100} height={50} fill='none' stroke="#543310" strokeWidth={3}/>
         </g>
       </svg>
     </>
